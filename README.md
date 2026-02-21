@@ -2,6 +2,7 @@
 Designed to be controlled by AI agent. Simple Live2D frontend with UI pose, animation manager and REST api for remote control the model. 
 
 ![demo](demo.gif)
+※ Model in the sample gif is <code>SDちくわちゃん</code> by [入鹿ぱる @@pal156](https://x.com/pal156)
 
 ## Feature
 - Pose manager
