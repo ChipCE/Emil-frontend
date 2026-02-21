@@ -1,6 +1,8 @@
 # Live2D-Puppet-Link
 Designed to be controlled by AI agent. Simple Live2D frontend with UI pose, animation manager and REST api for remote control the model. 
 
+![demo](demo.gif)
+
 ## Feature
 - Pose manager
 - Animation manager
@@ -258,3 +260,7 @@ Open your browser and navigate to:
 <pre>
 http://localhost:8000
 </pre>
+
+## 3. REST API
+
+This software provides a REST API to manage and control the model remotely. See the [API documentation](./API_DOCUMENTATION.md) for details.
