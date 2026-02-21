@@ -1,0 +1,1188 @@
+body,
+html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #333333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: sans-serif;
+}
+
+canvas {
+    display: block;
+    position: relative;
+    z-index: 1;
+}
+
+#background-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    overflow: hidden;
+    background-color: #333333;
+}
+
+#background-media {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#start-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+}
+
+#start-overlay h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+#subtitle-container {
+    position: fixed;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 800px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    font-family: 'Outfit', sans-serif;
+    z-index: 1000;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#subtitle-container.visible {
+    opacity: 1;
+}
+
+#controls {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    overflow-y: auto;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 2000;
+}
+
+#controls.visible {
+    transform: translateX(0);
+}
+
+#toggle-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 120px;
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1001;
+    font-weight: bold;
+    text-align: center;
+    transition: left 0.3s ease-in-out;
+}
+
+#toggle-btn:hover {
+    background-color: #555;
+}
+
+body.settings-open #toggle-btn {
+    left: 360px;
+}
+
+#sync-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 140px;
+    padding: 10px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1001;
+    font-weight: bold;
+    color: white;
+    background-color: #888;
+    text-align: center;
+    transition: right 0.3s ease-in-out;
+}
+
+#sync-btn.active {
+    background-color: #2a6;
+}
+
+#sync-btn:hover {
+    opacity: 0.85;
+}
+
+#mute-btn {
+    position: absolute;
+    top: 68px;
+    right: 16px;
+    width: 140px;
+    padding: 10px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1001;
+    font-weight: bold;
+    color: white;
+    background-color: #888;
+    text-align: center;
+    transition: right 0.3s ease-in-out;
+}
+
+#mute-btn.active {
+    background-color: #2a6;
+}
+
+#mute-btn:hover {
+    opacity: 0.85;
+}
+
+#profiles-btn {
+    position: absolute;
+    top: 120px;
+    right: 16px;
+    width: 140px;
+    padding: 10px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1001;
+    font-weight: bold;
+    color: white;
+    background-color: #666;
+    text-align: center;
+    transition: right 0.3s ease-in-out;
+}
+
+#profiles-btn:hover {
+    background-color: #888;
+}
+
+/* Shift buttons when profiles panel is open */
+body.profiles-open #sync-btn,
+body.profiles-open #mute-btn,
+body.profiles-open #profiles-btn,
+body.profiles-open #scenes-btn {
+    right: 360px;
+}
+
+/* Shift buttons when scenes panel is open */
+body.scenes-open #sync-btn,
+body.scenes-open #mute-btn,
+body.scenes-open #profiles-btn,
+body.scenes-open #scenes-btn {
+    right: 360px;
+}
+
+#scenes-btn {
+    position: absolute;
+    top: 172px;
+    right: 16px;
+    width: 140px;
+    padding: 10px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1001;
+    font-weight: bold;
+    color: white;
+    background-color: #666;
+    text-align: center;
+    transition: right 0.3s ease-in-out;
+}
+
+#scenes-btn:hover {
+    background-color: #888;
+}
+
+/* --- Profiles Slide-out Panel --- */
+#profiles-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    overflow-y: auto;
+    padding: 20px;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 2000;
+}
+
+#profiles-panel.visible {
+    transform: translateX(0);
+}
+
+#profiles-panel h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+#profiles-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-bottom: 40px;
+    /* Prevent clipping */
+}
+
+.profile-card {
+    display: flex;
+    flex-direction: column;
+    /* Stack info and actions vertically */
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 8px;
+    padding: 10px 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background: #fafafa;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.profile-card:hover {
+    background: #f0f0f0;
+    border-color: #ccc;
+}
+
+.profile-card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+}
+
+.profile-card-name {
+    font-weight: bold;
+    font-size: 14px;
+    color: #222;
+    text-transform: capitalize;
+}
+
+.profile-card-scopes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.scope-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 12px;
+    background: #e0edff;
+    color: #2a6;
+    letter-spacing: 0.3px;
+}
+
+.profile-card-actions {
+    display: flex;
+    gap: 6px;
+    width: 100%;
+}
+
+.profile-card .apply-btn {
+    padding: 0 14px;
+    height: 32px;
+    line-height: 32px;
+    background-color: #2a6;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 13px;
+    flex-shrink: 0;
+    transition: background-color 0.15s;
+    flex: 1;
+    /* Make buttons expand nicely or keep them fixed? Let's use flex:1 for Apply/Edit and auto for delete */
+}
+
+.profile-card .apply-btn:hover {
+    background-color: #1b7;
+}
+
+.profile-card .delete-btn {
+    padding: 0 10px;
+    height: 32px;
+    line-height: 32px;
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    opacity: 0.6;
+    /* Increased visibility */
+    transition: opacity 0.15s, background-color 0.15s;
+    flex-shrink: 0;
+    box-sizing: border-box;
+}
+
+.profile-card .delete-btn:hover {
+    opacity: 1;
+    background-color: #fee;
+    border-color: #fcc;
+}
+
+.profile-card .edit-btn {
+    padding: 0 14px;
+    height: 32px;
+    line-height: 32px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background-color 0.15s;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    font-weight: bold;
+    color: #444;
+    flex: 1;
+}
+
+.profile-card .edit-btn:hover {
+    background-color: #e0f0ff;
+    border-color: #aaddff;
+}
+
+.profile-card.editing {
+    background-color: #fff9c4;
+    /* Light yellow highlight */
+    border-color: #fbc02d;
+}
+
+/* Save button when in editing mode */
+#export-btn.recording-btn {
+    background-color: #ff9800;
+    /* Orange */
+}
+
+#export-btn.recording-btn:hover {
+    background-color: #f57c00;
+}
+
+/* --- Scenes Slide-out Panel --- */
+#scenes-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    overflow-y: auto;
+    padding: 20px;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 2000;
+}
+
+#scenes-panel.visible {
+    transform: translateX(0);
+}
+
+#scenes-panel h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+#scenes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-bottom: 40px;
+    /* Prevent clipping */
+}
+
+.scene-card {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 10px 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background: #fafafa;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.scene-card:hover {
+    background: #f0f0f0;
+    border-color: #ccc;
+}
+
+.scene-card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+}
+
+.scene-card-name {
+    font-weight: bold;
+    font-size: 14px;
+    color: #222;
+}
+
+.scene-card-steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.step-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    background-color: #e8d8f0;
+    color: #6a3d8a;
+    border-radius: 12px;
+    font-size: 11px;
+}
+
+.step-badge.deleted-profile {
+    background-color: #ffebee;
+    color: #c62828;
+    border: 1px solid #ffcdd2;
+}
+
+#add-profile-btn,
+#add-scene-btn {
+    width: 100%;
+    padding: 8px;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    background: transparent;
+    color: #666;
+    font-weight: bold;
+    font-size: 13px;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+}
+
+#add-profile-btn:hover,
+#add-scene-btn:hover {
+    border-color: #999;
+    color: #333;
+}
+
+.scene-card-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+}
+
+.scene-edit-btn {
+    padding: 4px 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: white;
+    color: #333;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+.scene-edit-btn:hover {
+    background-color: #eee;
+}
+
+.scene-play-btn,
+.scene-loop-btn {
+    padding: 4px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: white;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+.scene-play-btn:hover {
+    background-color: #d4edda;
+}
+
+.scene-loop-btn:hover {
+    background-color: #d6e9f8;
+}
+
+.scene-card .delete-btn {
+    padding: 4px 8px;
+    font-size: 14px;
+    background: transparent;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.15s;
+}
+
+.scene-card .delete-btn:hover {
+    opacity: 1;
+}
+
+/* --- Scene Editor Dialog --- */
+.scene-editor-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+.scene-editor-dialog {
+    background: white;
+    border-radius: 10px;
+    padding: 24px 28px;
+    min-width: 380px;
+    max-width: 480px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.scene-editor-dialog h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.scene-editor-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.scene-editor-row label {
+    font-weight: bold;
+    font-size: 13px;
+    color: #555;
+    min-width: 50px;
+}
+
+.scene-editor-name {
+    flex: 1;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.scene-editor-name:disabled {
+    background: #f0f0f0;
+    color: #888;
+}
+
+.scene-editor-steps-label {
+    font-weight: bold;
+    font-size: 13px;
+    color: #555;
+}
+
+.scene-editor-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.scene-step-row {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 8px;
+    background: #f8f8f8;
+    border: 1px solid #e8e8e8;
+    border-radius: 6px;
+}
+
+.scene-step-profile {
+    flex: 1;
+    padding: 5px 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.scene-step-profile.deleted-profile-select {
+    border-color: #ef9a9a;
+    color: #c62828;
+    background-color: #ffebee;
+}
+
+.scene-step-duration {
+    width: 65px;
+    padding: 5px 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 12px;
+    text-align: right;
+}
+
+.scene-step-duration.scene-step-duration-error {
+    border-color: #ef9a9a;
+    background-color: #ffebee;
+}
+
+.scene-step-ms {
+    font-size: 11px;
+    color: #999;
+}
+
+.scene-step-btn {
+    padding: 3px 7px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+    font-size: 10px;
+    transition: background-color 0.15s;
+}
+
+.scene-step-btn:hover {
+    background-color: #eee;
+}
+
+.scene-step-remove {
+    color: #c33;
+    font-weight: bold;
+}
+
+.scene-step-remove:hover {
+    background-color: #fee;
+}
+
+.scene-editor-add-step {
+    width: 100%;
+    padding: 7px;
+    border: 2px dashed #ccc;
+    border-radius: 6px;
+    background: transparent;
+    color: #666;
+    font-size: 12px;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+}
+
+.scene-editor-add-step:hover {
+    border-color: #999;
+    color: #333;
+}
+
+.scene-editor-status {
+    font-size: 12px;
+    min-height: 16px;
+}
+
+.scene-editor-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.scene-editor-actions button {
+    flex: 1;
+    padding: 9px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 13px;
+    transition: background-color 0.15s;
+}
+
+.scene-editor-cancel {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.scene-editor-cancel:hover {
+    background-color: #ccc;
+}
+
+.scene-editor-save {
+    background-color: #2a6;
+    color: white;
+}
+
+.scene-editor-save:hover {
+    background-color: #1d8;
+}
+
+/* Parameter group headers (from parameter_wrapper.json) */
+.param-group-header {
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #555;
+    margin: 0;
+    padding: 8px 0 4px;
+    border-top: 1px solid #ddd;
+}
+
+.param-group-header:first-child {
+    border-top: none;
+    padding-top: 0;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.control-group label {
+    font-size: 12px;
+    margin-bottom: 2px;
+    font-weight: bold;
+}
+
+.control-group input {
+    width: 100%;
+}
+
+.control-group span {
+    font-size: 10px;
+    color: #666;
+    align-self: flex-end;
+}
+
+/* Export Button */
+#export-btn {
+    padding: 10px;
+    background-color: #2a6;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+#export-btn:hover {
+    background-color: #1b7;
+}
+
+/* Export Dialog Overlay */
+#export-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 3000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(3px);
+}
+
+#export-overlay.visible {
+    display: flex;
+}
+
+#export-dialog {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    width: 500px;
+    max-width: 90vw;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+#export-dialog h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+#export-actions-top {
+    display: flex;
+    gap: 8px;
+}
+
+#export-actions-top button {
+    padding: 4px 10px;
+    font-size: 12px;
+    background: #eee;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#export-actions-top button:hover {
+    background: #ddd;
+}
+
+#export-checkboxes {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+}
+
+.export-checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    white-space: nowrap;
+    min-width: 45%;
+}
+
+.export-checkbox-item input[type="checkbox"] {
+    margin: 0;
+    cursor: pointer;
+}
+
+#export-textarea {
+    width: 100%;
+    height: 200px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 10px;
+    resize: vertical;
+    box-sizing: border-box;
+    background: #f8f8f8;
+}
+
+#export-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+#export-actions button,
+#export-actions-bottom button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 13px;
+    width: 100%;
+}
+
+#export-copy {
+    background-color: #2a6;
+    color: white;
+}
+
+#export-copy:hover {
+    background-color: #1b7;
+}
+
+#export-close {
+    background-color: #666;
+    color: white;
+}
+
+#export-close:hover {
+    background-color: #888;
+}
+
+#export-actions-bottom {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+}
+
+/* --- Save-as-profile section --- */
+#save-profile-section h4 {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.save-profile-note {
+    font-size: 11px;
+    color: #999;
+    margin: -4px 0 6px 68px;
+}
+
+/* Custom confirm dialog */
+.confirm-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+.confirm-dialog {
+    background: white;
+    border-radius: 10px;
+    padding: 24px 28px;
+    min-width: 280px;
+    max-width: 360px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+.confirm-message {
+    margin: 0 0 20px 0;
+    font-size: 15px;
+    color: #333;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.confirm-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.confirm-actions button {
+    flex: 1;
+    padding: 9px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 13px;
+    transition: background-color 0.15s;
+}
+
+.confirm-cancel {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.confirm-cancel:hover {
+    background-color: #ccc;
+}
+
+.confirm-delete {
+    background-color: #d44;
+    color: white;
+}
+
+.confirm-delete:hover {
+    background-color: #b33;
+}
+
+.save-profile-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.save-profile-row label {
+    width: 60px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #444;
+    flex-shrink: 0;
+}
+
+.save-profile-row select,
+.save-profile-row input[type="text"] {
+    flex: 1;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 13px;
+    background: #fff;
+}
+
+.save-profile-row select:focus,
+.save-profile-row input[type="text"]:focus {
+    outline: none;
+    border-color: #2a6;
+}
+
+.save-profile-row input[type="text"]:disabled {
+    background: #eee;
+    color: #888;
+}
+
+#save-profile-btn {
+    padding: 8px 16px;
+    background-color: #2a6;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 13px;
+    width: 100%;
+}
+
+#save-profile-btn:hover {
+    background-color: #1b7;
+}
+
+#save-profile-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+#save-profile-status {
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* --- Extras Status Box --- */
+#extras-container {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 90;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease;
+    backdrop-filter: blur(4px);
+    display: none;
+    /* hidden by default until populated */
+}
+
+#extras-container.hidden {
+    transform: translateY(calc(100% + 20px));
+}
+
+#extras-toggle-btn {
+    position: absolute;
+    top: -25px;
+    left: 0;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 12px;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+}
+
+#extras-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.extras-group {
+    margin-bottom: 8px;
+}
+
+.extras-group:last-child {
+    margin-bottom: 0;
+}
+
+.extras-group-name {
+    font-weight: bold;
+    font-size: 12px;
+    color: #aaddff;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 2px;
+}
+
+.extras-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 2px;
+}
+
+.extras-label {
+    color: #ccc;
+}
+
+.extras-value {
+    font-weight: bold;
+    color: #fff;
+    text-align: right;
+}

@@ -1,0 +1,71 @@
+{
+    "idle_timeout": 5,
+    "queue_poll_interval": 200,
+    "default_zoom": 0.35,
+    "model_path": "YOURMODEL/YOURMODEL.model3.json",
+    "background_video": "YOURMODEL/background.mp4",
+    "background_image": "YOURMODEL/background.jpg",
+    "profiles_path": "YOURMODEL/profiles.json",
+    "scenes_path": "YOURMODEL/scenes.json",
+    "extras": [
+        {
+            "endpoint": "http://localhost:8001/test1",
+            "endpointName": "local arr",
+            "refreshTime": 1000,
+            "proxy": true,
+            "hideOnErr": false,
+            "data": [
+                {
+                    "key": "aa",
+                    "name": "Sample label"
+                },
+                {
+                    "key": "sub.subVal",
+                    "name": "Sample label2"
+                },
+                {
+                    "key": "sub",
+                    "name": "obj"
+                },
+                {
+                    "key": "dsjdks",
+                    "name": "nonenonoe"
+                }
+            ]
+        },
+        {
+            "endpoint": "http://localhost:8001/test3",
+            "endpointName": "local arr",
+            "refreshTime": 1000,
+            "proxy": true,
+            "hideOnErr": false,
+            "data": [
+                {
+                    "key": "[2]",
+                    "name": "Sample label"
+                },
+                {
+                    "key": "[0].tmp1",
+                    "name": "Sample label"
+                },
+                {
+                    "key": "[1]",
+                    "name": "Sample label"
+                }
+            ]
+        },
+        {
+            "endpoint": "http://localhost:8001/test1",
+            "endpointName": "no proxy test",
+            "refreshTime": 1000,
+            "proxy": true,
+            "hideOnErr": false,
+            "data": [
+                {
+                    "key": "bool",
+                    "name": "Sample label"
+                }
+            ]
+        }
+    ]
+}

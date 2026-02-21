@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live2D Viewer</title>
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="stylesheet" href="style.css">
+    <!-- PixiJS -->
+    <script src="lib/live2dcubismcore.min.js"></script>
+    <script src="lib/pixi.min.js"></script>
+    <script src="lib/cubism4.min.js"></script>
+</head>
+<body>
+    <div id="start-overlay">
+        <h1>Live2D Viewer</h1>
+        <p>Click anywhere to start</p>
+    </div>
+    <div id="subtitle-container"></div>
+    <div id="background-container"></div>
+    <canvas id="canvas"></canvas>
+    <button id="sync-btn" class="active">⚡ Sync: ON</button>
+    <button id="mute-btn" class="active">🔊 Audio</button>
+    <button id="profiles-btn">📋 Profiles</button>
+    <button id="scenes-btn">🎬 Scenes</button>
+    <button id="toggle-btn">⚙️ Settings</button>
+    <div id="controls">
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+{
+    "Toggles": {
+        "Param23": {
+            "name": "Eye reflection transparency"
+        },
+        "Param25": {
+            "name": "Hair pin transparency"
+        },
+        "Param40": {
+            "name": "White pupil"
+        },
+        "Param26": {
+            "name": "Bell transparency"
+        },
+        "Param27": {
+            "name": "Choker transparency"
+        },
+        "Param24": {
+            "name": "Ribbon transparency transparency"
+        },
+        "Param41": {
+            "name": "Hair choroke transparency"
+        },
+        "Param42": {
+            "name": "Cat ears and tail transparency"
+        }
+    },
+    "Eyes": {
+        "Param36": {
+            "name": "Eyebrow"
+        },
+        "Param43": {
+            "name": "Eyelash"
+        },
+        "ParamBrowLForm": {
+            "name": "Left eyebrow form"
+        },
+        "ParamBrowRForm": {
+            "name": "Right eyebrow form"
+        },
+        "ParamEyeLSmile": {
+            "name": "Left eye smile"
+        },
+        "ParamEyeRSmile": {
+            "name": "Right eye smile"
+        },
+        "ParamEyeLOpen": {
+            "name": "Left eye open"
+        },
+        "ParamEyeROpen": {
+            "name": "Right eye open"
+        },
+        "ParamEyeBallX": {
+            "name": "Eye ball x"
+        },
+        "ParamEyeBallY": {
+            "name": "Eye ball y"
+        }
+    },
+    "Mouth": {
+        "ParamMouthForm": {
+            "name": "Mouth form"
+        },
+        "ParamMouthOpenY": {
+            "name": "Mouth open y"
+        }
+    },
+    "Hair": {
+        "Param32": {
+            "name": "Hair front"
+        },
+        "Param33": {
+            "name": "Hair side"
+        },
+        "Param34": {
+            "name": "Hair back"
+        }
+    },
+    "Head": {
+        "ParamAngleX": {
+            "name": "Head x"
+        },
+        "ParamAngleY": {
+            "name": "Head y"
+        },
+        "ParamAngleZ": {
+            "name": "Head z"
+        }
+    },
+    "Body": {
+        "ParamBodyAngleX": {
+            "name": "Body x"
+        },
+        "ParamBodyAngleY": {
+            "name": "Body y"
+        },
+        "ParamBodyAngleZ": {
+            "name": "Body z"
+        }
+    }
+}
